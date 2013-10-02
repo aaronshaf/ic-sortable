@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ic-sortable</title>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
+</head>
+<body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="https://rawgithub.com/voidberg/html5sortable/master/jquery.sortable.js"></script>
+  <script src="http://builds.emberjs.com/handlebars-1.0.0.js"></script>
+  <script src="http://builds.emberjs.com/tags/v1.0.0/ember.js"></script>
+
+  <script>
+  App = Ember.Application.create();
+
+  var like = Ember.ArrayProxy.create({content: []});
+  like.addObject({name: 'apple', checked: true});
+  like.addObject({name: 'orange', checked: true});
+  like.addObject({name: 'banana', checked: true});
+  like.addObject({name: 'cherry', checked: true});
+  like.addObject({name: 'pear', checked: true});
+
+  var dontLike = Ember.ArrayProxy.create({content: []});
+  like.addObject({name: 'apple', checked: true});
+  like.addObject({name: 'orange', checked: true});
+  like.addObject({name: 'banana', checked: true});
+  like.addObject({name: 'cherry', checked: true});
+  like.addObject({name: 'pear', checked: true});
+
+  App.ApplicationController = Ember.Object.extend({
+    like: like,
+    dontLike: dontLike,
+    selectedFruit: function() {
+      return like.filterProperty('checked');
+    }.property('like.@each.checked')
+  });
+
+  // App.ApplicationView = Ember.View.extend({
+  //   didInsertElement: function() {
+  //     $('.sortable').sortable();
+  //   }
+  // });
+
+  // App.IcSortableItem = Ember.View.extend({
+    
+  // });
+
+  var CustomElement = Ember.Mixin.create({
+    init: function() {
+      this._super.apply(this, arguments);
+      var name = this.constructor.toString().split('.')[1]
+        .camelize().dasherize().replace(/-component$/, '');
+      document.createElement(name);
+      this.set('tagName', name);
+    }
+  });
+
+  App.IcSortableComponent = Ember.Component.extend(CustomElement,{
+
+  });
+
+  App.IcSortableListComponent = Ember.Component.extend(CustomElement,{
+    // classNames: ['primary'],
+    didInsertElement: function() {
+      this.$().sortable({
+        items: this.$('> ic-sortable-item')
+      });
+    }
+  });
+
+  App.IcSortableListItemComponent = Ember.Component.extend(CustomElement,{
+
+  });
+  </script>
+
+  <script type="text/x-handlebars">
+    <h2>Drag and Drop Using Ember Components and voidberg/html5sortable</h2>
+    
+    {{#ic-sortable}}
+      {{#ic-sortable-list}}
+        {{#each selectedFruit}}
+          {{#ic-sortable-item}}
+            <li>{{name}}</li>
+          {{/ic-sortable-item}}
+        {{/each}}
+      {{/ic-sortable-list}}
+    {{/ic-sortable}}
+  </script>
+
+  <script type="text/x-handlebars" id="components/ic-sortable">
+    {{yield}}
+  </script>
+
+  <script type="text/x-handlebars" id="components/ic-sortable-list">
+    {{yield}}
+  </script>
+
+  <script type="text/x-handlebars" id="components/ic-sortable-item">
+    {{yield}}
+  </script>
+</body>
+</html>
