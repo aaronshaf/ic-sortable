@@ -6,8 +6,8 @@
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
 </head>
 <body>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="https://rawgithub.com/voidberg/html5sortable/master/jquery.sortable.js"></script>
+  <script src="vendor/jquery.min.js"></script>
+  <script src="vendor/jquery.sortable.js"></script>
   <script src="http://builds.emberjs.com/handlebars-1.0.0.js"></script>
   <script src="http://builds.emberjs.com/tags/v1.0.0/ember.js"></script>
 
@@ -73,7 +73,7 @@
       this.$().sortable({
         items: this.$('> ic-sortable-item'),
         connectWith: this.get('connect-with'),
-        handle: this.$('.ic-drag-handler[data-connect-with="' + this.get('connect-with') + '"]'),
+        handle: this.$('.ic-drag-handler[connect-with="' + this.get('connect-with') + '"]'),
         forcePlaceholderSize: true
       });
       // alert(this.get('connect-with'));
@@ -92,19 +92,19 @@
       {{#each kids}}
         {{#ic-sortable-item}}
           <div>
-            <span class="ic-drag-handler" data-connect-with="modules-sortable">[Handler]</span>
+            <span class="ic-drag-handler" connect-with="modules-sortable">[Handler]</span>
             {{name}}
             <ul>
-            {{#ic-sortable connect-with="items-sortable"}}
-              {{#each chores}}
-                {{#ic-sortable-item}}
-                  <li>
-                    <span class="ic-drag-handler" data-connect-with="items-sortable">[Handler]</span>
-                    {{this}}
-                  </li>
-                {{/ic-sortable-item}}
-              {{/each}}
-            {{/ic-sortable}}
+              {{#ic-sortable connect-with="items-sortable"}}
+                {{#each chores}}
+                  {{#ic-sortable-item}}
+                    <li>
+                      <span class="ic-drag-handler" connect-with="items-sortable">[Handler]</span>
+                      {{this}}
+                    </li>
+                  {{/ic-sortable-item}}
+                {{/each}}
+              {{/ic-sortable}}
             </ul>
           </div>
         {{/ic-sortable-item}}
