@@ -14,26 +14,33 @@
   <script>
   App = Ember.Application.create();
 
-  var like = Ember.ArrayProxy.create({content: []});
-  like.addObject({name: 'apple', checked: true});
-  like.addObject({name: 'orange', checked: true});
-  like.addObject({name: 'banana', checked: true});
-  like.addObject({name: 'cherry', checked: true});
-  like.addObject({name: 'pear', checked: true});
+  var kids = Ember.ArrayProxy.create({content: []});
+  kids.addObject({
+    name: 'John',
+    chores: Ember.ArrayProxy.create({content: [
+      'Dishes',
+      'Laundry'
+    ]})
+  });
 
-  var dontLike = Ember.ArrayProxy.create({content: []});
-  like.addObject({name: 'apple', checked: true});
-  like.addObject({name: 'orange', checked: true});
-  like.addObject({name: 'banana', checked: true});
-  like.addObject({name: 'cherry', checked: true});
-  like.addObject({name: 'pear', checked: true});
+  kids.addObject({
+    name: 'Jane',
+    chores: Ember.ArrayProxy.create({content: [
+      'Sweep floor',
+      'Mow lawn'
+    ]})
+  });
+
+  kids.addObject({
+    name: 'Jimmy',
+    chores: Ember.ArrayProxy.create({content: [
+      'Vacuum',
+      'Take trash out'
+    ]})
+  });
 
   App.ApplicationController = Ember.Object.extend({
-    like: like,
-    dontLike: dontLike,
-    selectedFruit: function() {
-      return like.filterProperty('checked');
-    }.property('like.@each.checked')
+    kids: kids
   });
 
   // App.ApplicationView = Ember.View.extend({
@@ -60,12 +67,14 @@
 
   });
 
-  App.IcSortableListComponent = Ember.Component.extend(CustomElement,{
+  App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     // classNames: ['primary'],
     didInsertElement: function() {
       this.$().sortable({
-        items: this.$('> ic-sortable-item')
+        items: this.$('> ic-sortable-item'),
+        connectWith: this.get('connect-with')
       });
+      // alert(this.get('connect-with'));
     }
   });
 
@@ -77,14 +86,23 @@
   <script type="text/x-handlebars">
     <h2>Drag and Drop Using Ember Components and voidberg/html5sortable</h2>
     
-    {{#ic-sortable}}
-      {{#ic-sortable-list}}
-        {{#each selectedFruit}}
-          {{#ic-sortable-item}}
-            <li>{{name}}</li>
-          {{/ic-sortable-item}}
-        {{/each}}
-      {{/ic-sortable-list}}
+    {{#ic-sortable connect-with="modules-sortable"}}
+      {{#each kids}}
+        {{#ic-sortable-item}}
+          <div>
+            {{name}}
+            <ul>
+            {{#ic-sortable connect-with="items-sortable"}}
+              {{#each chores}}
+                <li>
+                  {{this}}
+                </li>
+              {{/each}}
+            {{/ic-sortable}}
+            </ul>
+          </div>
+        {{/ic-sortable-item}}
+      {{/each}}
     {{/ic-sortable}}
   </script>
 
