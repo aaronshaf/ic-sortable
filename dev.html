@@ -19,7 +19,7 @@
     <h2 aria-hidden="true">Drag and Drop Using <a href="http://emberjs.com/guides/components/">Ember Components</a> and <a href="http://dev.w3.org/html5/spec-LC/dnd.html">Native HTML5 Drag and Drop API</a></h2>
     
     <div class="item-group-container">
-      {{#ic-sortable connect-with="modules"}}
+      {{#ic-sortable connected-with="modules"}}
         {{#each kids}}
           {{#ic-sortable-item class="item-group-condensed" url=url aria-label=name}}
             <div class="ig-header">
@@ -29,7 +29,7 @@
             </div>
 
             <ul class="ig-list">
-              {{#ic-sortable connect-with="items-sortable"}}
+              {{#ic-sortable connected-with="items-sortable"}}
                 {{#each chores}}
                   {{#ic-sortable-item class="ig-row" url=url label=name}}
                     <div href="#" class="ig-title ellipses">

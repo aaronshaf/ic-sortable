@@ -97,11 +97,11 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
   didInsertElement: function() {
     // this.$().sortable({
     //   items: this.$('> ic-sortable-item'),
-    //   connectWith: this.get('connect-with'),
-    //   handle: this.$('.ic-drag-handler[connect-with="' + this.get('connect-with') + '"]'),
+    //   connectWith: this.get('connected-with'),
+    //   handle: this.$('.ic-drag-handler[connected-with="' + this.get('connected-with') + '"]'),
     //   forcePlaceholderSize: true
     // });
-    // alert(this.get('connect-with'));
+    // alert(this.get('connected-with'));
   },
 
   drop: function(event) {
@@ -119,8 +119,12 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     'draggable::draggable',
     'tabindex',
     'label:aria-label',
-    'ariaGrabbed:aria-grabbed'
+    'ariaGrabbed:aria-grabbed',
+    'connectedWith:ic-connected-with'
   ],
+  connectedWith: function() {
+    return this.get('parentView.connected-with');
+  }.property('parentView.connected-with'),
   ariaGrabbed: function() {
     return this.get('grabbed') + '';
   }.property('grabbed'),
@@ -133,6 +137,12 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     event.dataTransfer.setData('Text', this.get('url')); // necessary to have something
     // event.target.opacity = "1.0";
     // event.dataTransfer.setDragImage(event.target,-10,-10);
+
+    var nodeList = document.querySelectorAll('[ic-connected-with="' + this.get('connectedWith') + '"]')
+    for(var i = 0; i < nodeList.length; ++i) {
+      nodeList[i].setAttribute('aria-dropeffect', 'move');
+    }
+
     this.set('grabbed',true);
   },
 
@@ -169,10 +179,10 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
       var thisElement = this.$().get(0);
 
       if (thisElement != draggedElement.parentNode) {
-        if(!this.get('parentView.connect-with')) {
+        if(!this.get('parentView.connected-with')) {
           return false;
         }
-        if(this.get('parentView.connect-with') !== currentlyDraggingInstance.get('parentView.connect-with')) {
+        if(this.get('parentView.connected-with') !== currentlyDraggingInstance.get('parentView.connected-with')) {
           return false;
         }
       }
@@ -194,6 +204,11 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     draggedElement.style.opacity = 1;
     currentlyDraggingInstance = undefined;
     this.set('grabbed',false);
+
+    var nodeList = document.querySelectorAll('[aria-dropeffect]')
+    for(var i = 0; i < nodeList.length; ++i) {
+      nodeList[i].removeAttribute('aria-dropeffect');
+    }
     event.preventDefault();
   }
 });
