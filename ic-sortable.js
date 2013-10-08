@@ -1,53 +1,79 @@
-App = Ember.Application.create();
+App = Ember.Application.create({
+  // LOG_TRANSITIONS: true,
+  // LOG_TRANSITIONS_INTERNAL: true,
+  // LOG_VIEW_LOOKUPS: true,
+  LOG_ACTIVE_GENERATION: true
+});
 
 var kids = Ember.ArrayProxy.create({content: []});
+
 kids.addObject({
   name: 'John',
+  order: 0,
   url: 'http://localhost:8080/kids/1',
-  chores: Ember.ArrayProxy.create({content: [
-    {
-      url: 'http://localhost:8080/kids/1/chores/1',
-      name: 'Dishes'
-    },
-    {
-      url: 'http://localhost:8080/kids/1/chores/2',
-      name: 'Laundry'
-    }
-  ]})
+  chores: Ember.ArrayProxy.createWithMixins(Ember.SortableMixin,{
+    content: [
+      {
+        url: 'http://localhost:8080/kids/1/chores/1',
+        name: 'Dishes',
+        order: 2
+      },
+      {
+        url: 'http://localhost:8080/kids/1/chores/2',
+        name: 'Laundry',
+        order: 1
+      },
+    ],
+    sortProperties: ['order']
+  })
 });
 
 kids.addObject({
   name: 'Jane',
+  order: 2,
   url: 'http://localhost:8080/kids/2',
-  chores: Ember.ArrayProxy.create({content: [
-    {
-      url: 'http://localhost:8080/kids/2/chores/3',
-      name: 'Sweep floor'
-    },
-    {
-      url: 'http://localhost:8080/kids/2/chores/4',
-      name: 'Mow lawn'
-    }
-  ]})
+  chores: Ember.ArrayProxy.createWithMixins(Ember.SortableMixin,{
+    content: [
+      {
+        url: 'http://localhost:8080/kids/2/chores/3',
+        name: 'Sweep floor',
+        order: 1
+      },
+      {
+        url: 'http://localhost:8080/kids/2/chores/4',
+        name: 'Mow lawn',
+        order: 2
+      },
+    ],
+    sortProperties: ['order']
+  })
 });
 
 kids.addObject({
   name: 'Jimmy',
+  order: 1,
   url: 'http://localhost:8080/kids/3',
-  chores: Ember.ArrayProxy.create({content: [
-    {
-      url: 'http://localhost:8080/kids/3/chores/5',
-      name: 'Vacuum'
-    },
-    {
-      url: 'http://localhost:8080/kids/3/chores/6',
-      name: 'Take trash out'
-    }
-  ]})
+  chores: Ember.ArrayProxy.createWithMixins(Ember.SortableMixin,{
+    content: [
+      {
+        url: 'http://localhost:8080/kids/3/chores/5',
+        name: 'Vacuum',
+        order: 2
+      },
+      {
+        url: 'http://localhost:8080/kids/3/chores/6',
+        name: 'Take trash out',
+        order: 1
+      },
+    ],
+    sortProperties: ['order']
+  })
 });
 
-App.ApplicationController = Ember.Object.extend({
-  kids: kids
+App.ApplicationController = Ember.ArrayController.extend({
+  content: kids,
+  sortProperties: ['order'],
+  sortAscending: true
 });
 
 // App.ApplicationView = Ember.View.extend({
@@ -104,11 +130,11 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     // alert(this.get('connected-with'));
   },
 
-  drop: function(event) {
-    console.log('drop 2');
-    event.preventDefault()
-    return false;
-  }
+  // drop: function(event) {
+  //   console.log('drop 2');
+  //   event.preventDefault()
+  //   return false;
+  // }
 });
 
 App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
@@ -118,16 +144,19 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
   attributeBindings: [
     'draggable::draggable',
     'tabindex',
-    'label:aria-label',
+    'ariaLabel:aria-label',
     'ariaGrabbed:aria-grabbed',
     'connectedWith:ic-connected-with'
   ],
+
   connectedWith: function() {
     return this.get('parentView.connected-with');
   }.property('parentView.connected-with'),
+
   ariaGrabbed: function() {
     return this.get('grabbed') + '';
   }.property('grabbed'),
+
   dragStart: function(event) {
     event.stopPropagation()
     currentlyDraggingInstance = this;
