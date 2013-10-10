@@ -12,28 +12,46 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://builds.emberjs.com/handlebars-1.0.0.js"></script>
   <script src="http://builds.emberjs.com/tags/v1.0.0/ember.js"></script>
-
+  
+  <script src="data.js"></script>
+  <script src="app.js"></script>
   <script src="ic-sortable.js"></script>
 
   <script type="text/x-handlebars">
     <h2 aria-hidden="true">Drag and Drop Using <a href="http://emberjs.com/guides/components/">Ember Components</a> and <a href="http://dev.w3.org/html5/spec-LC/dnd.html">Native HTML5 Drag and Drop API</a></h2>
-    
+
     <div class="item-group-container">
-      {{#ic-sortable connected-with="modules"}}
-        {{#each}}
-          {{#ic-sortable-item class="item-group-condensed" url=url aria-label=name}}
+      {{#ic-sortable
+            connected-with="modules"
+            model=this}}
+        {{#each kid in this}}
+          {{#ic-sortable-item
+              class="item-group-condensed"
+              model=kid
+              url=kid.url
+              aria-label=kid.name}}
             <div class="ig-header">
               <h2 class="ig-header-title element_toggler">
-                <i class="icon-mini-arrow-down"></i> {{name}}
+                <i class="icon-mini-arrow-down"></i> {{kid.name}}
               </h2>
             </div>
 
+            {{kid.chores.length}}
+
             <ul class="ig-list">
-              {{#ic-sortable connected-with="items-sortable" model=chores}}
-                {{#each chores controller="test"}}
-                  {{#ic-sortable-item class="ig-row" url=url aria-label=name}}
+              {{#ic-sortable
+                  connected-with="items-sortable"
+                  on-drop=onDrop
+                  model=kid.chores}}
+                {{#each chore in kid.chores}}
+                  {{#ic-sortable-item
+                      class="ig-row"
+                      model=chore
+                      url=chore.url
+                      on-validate-drop=onValidateItemDrop
+                      aria-label=chore.name}}
                     <div href="#" class="ig-title ellipses">
-                      <i class="icon-assignment"></i> {{name}}
+                      <i class="icon-assignment"></i> {{chore.name}} (order: {{chore.order}})
                     </div>
                     <div class="ig-details row-fluid">
                       <div class="span4 ellipses"><b>Due</b> Nov 4, 2012</div>
@@ -47,7 +65,6 @@
 
                       <a class="al-trigger al-trigger-gray" href="#">
                         <i class="icon-settings"></i><i class="icon-mini-arrow-down"></i>
-                        <span class="screenreader-only"><%= t('manage', 'Manage') %></span>
                       </a>
                       <ul class="al-options">
                         <li><a href="#">Edit</a></li>
@@ -84,6 +101,10 @@
   </script>
 
   <style>
+    .container {
+      overflow: inherit;
+    }
+
     ic-sortable-item {
       display: list-item;  
       webkit-touch-callout: none;
