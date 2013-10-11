@@ -32,14 +32,28 @@ App.ApplicationController = Ember.ArrayController.extend({
     console.log('uri-list',event.dataTransfer.getData('text/uri-list'));
     console.log('parentModel',newList);
     console.log('object',object);
-    if(typeof newList !== 'undefined' && typeof object !== 'undefined') {
-      Ember.set(object,'order',newIndex - 0.1);
+
+    if(typeof newList === 'undefined') {
+      return false;
+    }
+
+    if(typeof object !== 'undefined') {
+      if(object.order < newIndex) {
+        newIndex += 0.1;
+      } else if(object.order >= newIndex) {
+        newIndex -= 0.1;
+      }
+      Ember.set(object,'order',newIndex);
       newList.pushObject(object);
       var order = 0;
       newList.forEach(function(item) {
         Ember.set(item,'order',order);
         order++;
       });
+    } else {
+      var url = event.dataTransfer.getData('text/uri-list');
+      // create object from URL
+      debugger
     }
 
     return true;

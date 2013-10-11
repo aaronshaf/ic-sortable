@@ -44,6 +44,10 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
   attributeBindings: [
     'dropEffect:aria-dropeffect'
   ],
+  type: function() {
+    // If type isn't provided upon instantiation, use list type
+    return this.get('parentView.type');
+  }.property(),
   didInsertElement: function() {
     // this.$().sortable({
     //   items: this.$('> ic-sortable-item'),
@@ -98,7 +102,13 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     currentlyDraggingObject = this.get('model')
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.dropEffect = 'move';
-    event.dataTransfer.setData('text/uri-list', this.get('url')); // necessary to have something
+    
+    var type = this.get('type');
+    if(typeof type === 'undefined') {
+      type = this.get('parentView.type');
+    }
+
+    event.dataTransfer.setData('text/' + type, this.get('url')); // necessary to have something
     event.dataTransfer.setData('Text', this.get('url')); // necessary to have something
     // event.target.opacity = "1.0";
     // event.dataTransfer.setDragImage(event.target,-10,-10);
@@ -142,8 +152,10 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
 
     // console.log('originalParentNode',!!this.originalParentNode);
 
-    this.get('parentView.model').removeObject(this.get('model'));
-    draggedElement.remove();
+    if(typeof currentlyDraggingObject !== 'undefined') {
+      this.get('parentView.model').removeObject(this.get('model'));
+      draggedElement.remove();
+    }
 
     // if(!!this.originalParentNode && this.originalParentNode !== draggedElement.parentNode) {
     //   this.get('parentView.model').removeObject(this.get('model'));
@@ -213,11 +225,15 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
       if(!this.get('on-validate-drop').call(this,event)) {
         return false;
       }
+    } else {
+      if(!event.dataTransfer.types.contains('text/' + this.get('type'))) {
+        return true;
+      }
     }
 
-    if(!event.dataTransfer.types.contains('text/uri-list')) {
-      return false;
-    }
+    // if(!event.dataTransfer.types.contains('text/uri-list')) {
+    //   return false;
+    // }
 
     if(typeof currentlyDraggingInstance === 'undefined' 
         || currentlyDraggingInstance.$().get(0) === this.$().get(0)) {
