@@ -34,6 +34,7 @@ var CustomElement = Ember.Mixin.create({
   }
 });
 
+var oldList = undefined;
 var currentlyDraggingInstance = undefined;
 var currentlyDraggingObject = undefined;
 var newIndex = undefined;
@@ -62,11 +63,32 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     // console.debug('sortable drop');
     // console.log('event.target',event.target);
 
+    // event,oldList,newList,object,newIndex
+
+    var object = currentlyDraggingObject; // for terseness
+    var newList = this.get('model');
+
+    if(typeof object !== 'undefined') {
+      if(object.order < newIndex) {
+        newIndex += 0.1;
+      } else if(object.order >= newIndex) {
+        newIndex -= 0.1;
+      }
+      Ember.set(object,'order',newIndex);
+      newList.pushObject(object);
+    }
+
     if(this.get('on-drop')) {
       if(!this.get('on-drop').call(this,event,[],this.get('model'),currentlyDraggingObject,newIndex)) { //parentModel, model
         return false;
       }
     }
+    
+    var order = 0;
+    newList.forEach(function(item) {
+      Ember.set(item,'order',order);
+      order++;
+    });
 
     event.preventDefault()
     currentlyDraggingObject = undefined;
@@ -227,7 +249,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
       }
     } else {
       if(!event.dataTransfer.types.contains('text/' + this.get('type'))) {
-        return true;
+        return false;
       }
     }
 

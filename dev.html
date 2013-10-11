@@ -25,6 +25,7 @@
       {{#ic-sortable
             connected-with="modules"
             model=this
+            on-drop=onModuleDrop
           }}
         {{#each kid in this}}
           {{#ic-sortable-item
@@ -36,7 +37,7 @@
             }}
             <div class="ig-header">
               <h2 class="ig-header-title element_toggler">
-                <i class="icon-mini-arrow-down"></i> {{kid.name}}
+                <i class="icon-mini-arrow-down"></i> {{kid.name}} (order: {{kid.order}})
               </h2>
             </div>
 
@@ -45,7 +46,7 @@
             <ul class="ig-list">
               {{#ic-sortable
                   connected-with="items-sortable"
-                  on-drop=onDrop
+                  on-drop=onModuleItemDrop
                   model=kid.chores
                   type="module-item"
                 }}
@@ -54,7 +55,7 @@
                       class="ig-row"
                       model=chore
                       url=chore.url
-                      on-validate-drop=onValidateItemDrop
+                      on-validate-drop=onValidateModuleItemDrop
                       aria-label=chore.name
                       type="module-item"}}
                     <div href="#" class="ig-title ellipses">

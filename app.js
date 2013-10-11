@@ -16,44 +16,56 @@ App.ApplicationController = Ember.ArrayController.extend({
   //   }
   // },
 
-  onValidateItemDrop: function(event) {
-    console.log('validateItemDrop');
-
-    if(event.dataTransfer.types.contains('text/uri-list')) {
-      return true;
+  onValidateModuleDrop: function(event) {
+    if(!event.dataTransfer.types.contains('text/module')) {
+      return false;
     }
-    console.log('uri-list',event.dataTransfer.getData('text/uri-list'));
+
+    return true;
+  },
+
+  onValidateModuleItemDrop: function(event) {
+    console.log('onValidateModuleItemDrop');
+
+    if(!event.dataTransfer.types.contains('text/module-item')) {
+      return false;
+    }
+
+    // console.log('uri-list',event.dataTransfer.getData('text/uri-list'));
     
     return true;
   },
 
-  onDrop: function(event,oldList,newList,object,newIndex) {
-    console.log('onItemDrop',event);
-    console.log('uri-list',event.dataTransfer.getData('text/uri-list'));
-    console.log('parentModel',newList);
-    console.log('object',object);
-
-    if(typeof newList === 'undefined') {
-      return false;
+  onModuleDrop: function(event,oldList,newList,object,newIndex) {
+    console.debug('onModuleDrop')
+    if(event.dataTransfer.types.contains('text/module')) {
+      return true;
     }
+    return false;
+  },
 
-    if(typeof object !== 'undefined') {
-      if(object.order < newIndex) {
-        newIndex += 0.1;
-      } else if(object.order >= newIndex) {
-        newIndex -= 0.1;
+  onModuleItemDrop: function(event,oldList,newList,object,newIndex) {
+    var name;
+    var url;
+    var module_item;
+
+    if(typeof object === 'undefined') {
+      if(event.dataTransfer.types.contains('text/module-item')) {
+        // alert('module-item');
+      } else if(event.dataTransfer.types.contains('text/uri-list')) {
+        if(event.dataTransfer.types.contains('text/uri-list') && event.dataTransfer.files && event.dataTransfer.files.length) {
+          name = event.dataTransfer.files[0].name;
+        } else {
+          name = event.dataTransfer.getData('text/uri-list');
+        }
+        url = event.dataTransfer.getData('text/uri-list');
+        module_item = Ember.Object.create({
+          url: url,
+          name: name,
+          order: newIndex + 0.1
+        });
+        newList.pushObject(module_item);
       }
-      Ember.set(object,'order',newIndex);
-      newList.pushObject(object);
-      var order = 0;
-      newList.forEach(function(item) {
-        Ember.set(item,'order',order);
-        order++;
-      });
-    } else {
-      var url = event.dataTransfer.getData('text/uri-list');
-      // create object from URL
-      debugger
     }
 
     return true;
