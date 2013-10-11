@@ -35,8 +35,8 @@ var CustomElement = Ember.Mixin.create({
 });
 
 var oldList = undefined;
-var currentlyDraggingInstance = undefined;
-var currentlyDraggingObject = undefined;
+var currentDraggable = undefined;
+var currentDraggableModel = undefined;
 var newIndex = undefined;
 
 App.IcSortableComponent = Ember.Component.extend(CustomElement,{
@@ -60,26 +60,44 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
   },
 
   drop: function(event) {
+    var newList = this.get('model');
+    var draggedElement;
+    var cameFromDifferentList;
     // console.debug('sortable drop');
     // console.log('event.target',event.target);
 
     // event,oldList,newList,object,newIndex
-
-    var object = currentlyDraggingObject; // for terseness
-    var newList = this.get('model');
-
-    if(typeof object !== 'undefined') {
-      if(object.order < newIndex) {
-        newIndex += 0.1;
-      } else if(object.order >= newIndex) {
-        newIndex -= 0.1;
+    
+    if(typeof currentDraggable !== 'undefined') {
+      oldList = currentDraggable.get('parentView.model');
+      cameFromDifferentList = oldList !== newList;
+      draggedElement = currentDraggable.$().get(0);
+      if(cameFromDifferentList) {
+        oldList.removeObject(currentDraggable.get('model'));    
       }
-      Ember.set(object,'order',newIndex);
-      newList.pushObject(object);
-    }
+      draggedElement.remove();
 
+      var object = currentDraggableModel; // for terseness
+      if(typeof object !== 'undefined') {
+        if(cameFromDifferentList) {
+          newIndex -= 0.1;
+        } else if(object.order < newIndex) {
+          newIndex += 0.1;
+        } else if(object.order >= newIndex) {
+          newIndex -= 0.1;
+        }
+        Ember.set(object,'order',newIndex);
+        
+        if(cameFromDifferentList) {
+          newList.pushObject(object);
+        }
+      }
+    } else {
+
+    }
+    
     if(this.get('on-drop')) {
-      if(!this.get('on-drop').call(this,event,[],this.get('model'),currentlyDraggingObject,newIndex)) { //parentModel, model
+      if(!this.get('on-drop').call(this,event,[],this.get('model'),currentDraggableModel,newIndex)) { //parentModel, model
         return false;
       }
     }
@@ -90,8 +108,16 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
       order++;
     });
 
+    if(cameFromDifferentList) {
+      order = 0;
+      oldList.forEach(function(item) {
+        Ember.set(item,'order',order);
+        order++;
+      });
+    }
+
     event.preventDefault()
-    currentlyDraggingObject = undefined;
+    currentDraggableModel = undefined;
     return false;
   }
 });
@@ -120,8 +146,8 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     // console.debug('dragStart');
 
     event.stopPropagation();
-    currentlyDraggingInstance = this;
-    currentlyDraggingObject = this.get('model')
+    currentDraggable = this;
+    currentDraggableModel = this.get('model')
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.dropEffect = 'move';
     
@@ -148,7 +174,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
 
     // console.debug('dragOver');
 
-    // if (!currentlyDraggingInstance) {
+    // if (!currentDraggable) {
     //   return true;
     // }
 
@@ -174,11 +200,6 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
 
     // console.log('originalParentNode',!!this.originalParentNode);
 
-    if(typeof currentlyDraggingObject !== 'undefined') {
-      this.get('parentView.model').removeObject(this.get('model'));
-      draggedElement.remove();
-    }
-
     // if(!!this.originalParentNode && this.originalParentNode !== draggedElement.parentNode) {
     //   this.get('parentView.model').removeObject(this.get('model'));
     //   draggedElement.remove();
@@ -193,7 +214,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     // }
     // event.preventDefault();
     // this.set('grabbed',false);
-    // currentlyDraggingInstance = undefined;
+    // currentDraggable = undefined;
     // draggedElement.style.opacity = 1;
 
     // if(this.originalParentNode !== draggedElement.parentNode) {
@@ -208,7 +229,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
 
 
     // Ember.run(function() {
-      // this.get('parentView.model').pushObject(currentlyDraggingObject);
+      // this.get('parentView.model').pushObject(currentDraggableModel);
       // console.log(this.get('parentView.model.length'));
     // }.bind(this));
 
@@ -219,10 +240,10 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     // to do: insert at the right index
 
     // this.get('parentView.model.content'); //not sure why this is necessary
-    // if(this.get('parentView.model').contains(currentlyDraggingObject)) {
+    // if(this.get('parentView.model').contains(currentDraggableModel)) {
     //   console.log('found it');
     //   console.log('---',this.$().get(0))
-    //   // console.log('currentlyDraggingObject',currentlyDraggingObject);
+    //   // console.log('currentDraggableModel',currentDraggableModel);
     //   // console.log('parentView.model',this.get('parentView.model.content').get('firstObject'));
     // } else {
     //   console.log('did not find');
@@ -230,14 +251,14 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
 
     // // console.log('parent',this.get('parentView.model.content'));
 
-    // if(!this.get('parentView.model').contains(currentlyDraggingObject)) {
+    // if(!this.get('parentView.model').contains(currentDraggableModel)) {
     //   console.log('did not already contain');
-    //   this.get('parentView.model').pushObject(currentlyDraggingObject);  
+    //   this.get('parentView.model').pushObject(currentDraggableModel);  
     // } else {
     //   console.log('already contained');
     // }
 
-    // currentlyDraggingObject = undefined;
+    // currentDraggableModel = undefined;
     event.preventDefault();
     // return false;
   },
@@ -257,18 +278,18 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     //   return false;
     // }
 
-    if(typeof currentlyDraggingInstance === 'undefined' 
-        || currentlyDraggingInstance.$().get(0) === this.$().get(0)) {
+    if(typeof currentDraggable === 'undefined' 
+        || currentDraggable.$().get(0) === this.$().get(0)) {
       // return false;
     } else {
-      var draggedElement = currentlyDraggingInstance.$().get(0);
+      var draggedElement = currentDraggable.$().get(0);
       var thisElement = this.$().get(0);
 
       if (thisElement != draggedElement.parentNode) {
         if(!this.get('parentView.connected-with')) {
           return false;
         }
-        if(this.get('parentView.connected-with') !== currentlyDraggingInstance.get('parentView.connected-with')) {
+        if(this.get('parentView.connected-with') !== currentDraggable.get('parentView.connected-with')) {
           return false;
         }
       }
@@ -286,8 +307,9 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
   },
 
   dragEnd: function(event) {
+    // alert('dragEnd')
     // console.log('dragEnd');
-    currentlyDraggingInstance = undefined;
+    currentDraggable = undefined;
 
     var nodeList = document.querySelectorAll('[aria-dropeffect]')
     for(var i = 0; i < nodeList.length; ++i) {
