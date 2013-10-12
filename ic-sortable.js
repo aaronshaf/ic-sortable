@@ -49,6 +49,7 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     // If type isn't provided upon instantiation, use list type
     return this.get('parentView.type');
   }.property(),
+
   didInsertElement: function() {
     // this.$().sortable({
     //   items: this.$('> ic-sortable-item'),
@@ -59,7 +60,22 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     // alert(this.get('connected-with'));
   },
 
+  dragEnter: function() {
+    // console.log('dragEnter 2');
+  },
+
   drop: function(event) {
+    //verify
+    if(this.get('on-validate-drop')) {
+      if(!this.get('on-validate-drop').call(this,event)) {
+        return false;
+      }
+    } else {
+      if(!event.dataTransfer.types.contains('text/' + this.get('type'))) {
+        return false;
+      }
+    }
+
     var newList = this.get('model');
     var draggedElement;
     var cameFromDifferentList;
@@ -97,7 +113,7 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     }
     
     if(this.get('on-drop')) {
-      if(!this.get('on-drop').call(this,event,[],this.get('model'),currentDraggableModel,newIndex)) { //parentModel, model
+      if(this.get('on-drop').call(this,event,[],this.get('model'),currentDraggableModel,newIndex) === false) { //parentModel, model
         return false;
       }
     }
@@ -264,8 +280,8 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
   },
 
   dragEnter: function(event) {
-    if(this.get('on-validate-drop')) {
-      if(!this.get('on-validate-drop').call(this,event)) {
+    if(this.get('parentView.on-validate-drop')) {
+      if(!this.get('parentView.on-validate-drop').call(this,event)) {
         return false;
       }
     } else {
@@ -278,6 +294,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     //   return false;
     // }
 
+    // debugger
     if(typeof currentDraggable === 'undefined' 
         || currentDraggable.$().get(0) === this.$().get(0)) {
       // return false;
@@ -285,14 +302,14 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
       var draggedElement = currentDraggable.$().get(0);
       var thisElement = this.$().get(0);
 
-      if (thisElement != draggedElement.parentNode) {
-        if(!this.get('parentView.connected-with')) {
-          return false;
-        }
-        if(this.get('parentView.connected-with') !== currentDraggable.get('parentView.connected-with')) {
-          return false;
-        }
-      }
+      // if (thisElement != draggedElement.parentNode) {
+      //   if(!this.get('parentView.connected-with')) {
+      //     return false;
+      //   }
+      //   if(this.get('parentView.connected-with') !== currentDraggable.get('parentView.connected-with')) {
+      //     return false;
+      //   }
+      // }
 
       if(isBelow(draggedElement, thisElement)) {
         thisElement.parentNode.insertBefore(draggedElement, thisElement);
@@ -303,7 +320,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     }
 
     event.preventDefault();
-    return false;
+    return true;
   },
 
   dragEnd: function(event) {

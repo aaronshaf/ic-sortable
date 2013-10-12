@@ -7,44 +7,22 @@ App = Ember.Application.create({
 
 App.ApplicationController = Ember.ArrayController.extend({
   content: kids,
-  one: 'two',
   sortProperties: ['order'],
   sortAscending: true,
-  // actions: {
-  //   test: function() {
-  //     return true; //boolean true doesn't work???
-  //   }
-  // },
 
   onValidateModuleDrop: function(event) {
-    if(!event.dataTransfer.types.contains('text/module')) {
-      return false;
-    }
-
-    return true;
+    return event.dataTransfer.types.contains('text/module');
   },
 
-  onValidateModuleItemDrop: function(event) {
-    console.log('onValidateModuleItemDrop');
-
-    if(!event.dataTransfer.types.contains('text/module-item')) {
-      return false;
-    }
-
-    // console.log('uri-list',event.dataTransfer.getData('text/uri-list'));
-    
-    return true;
+  onValidateModuleItemDrop: function(event) {   
+    return event.dataTransfer.types.contains('text/module-item') || event.dataTransfer.getData('text/uri-list');
   },
 
   onModuleDrop: function(event,oldList,newList,object,newIndex) {
-    console.debug('onModuleDrop')
-    if(event.dataTransfer.types.contains('text/module')) {
-      return true;
-    }
-    return false;
   },
 
   onModuleItemDrop: function(event,oldList,newList,object,newIndex) {
+    alert('onModuleItemDrop');
     var name;
     var url;
     var module_item;

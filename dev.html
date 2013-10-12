@@ -23,9 +23,9 @@
 
     <div class="item-group-container">
       {{#ic-sortable
-            connected-with="modules"
             model=this
             on-drop=onModuleDrop
+            type="module"
           }}
         {{#each kid in this}}
           {{#ic-sortable-item
@@ -45,9 +45,9 @@
 
             <ul class="ig-list">
               {{#ic-sortable
-                  connected-with="items-sortable"
-                  on-drop=onModuleItemDrop
                   model=kid.chores
+                  on-validate-drop=onValidateModuleItemDrop
+                  on-drop=onModuleItemDrop
                   type="module-item"
                 }}
                 {{#each chore in kid.chores}}
@@ -55,7 +55,6 @@
                       class="ig-row"
                       model=chore
                       url=chore.url
-                      on-validate-drop=onValidateModuleItemDrop
                       aria-label=chore.name
                       type="module-item"}}
                     <div href="#" class="ig-title ellipses">
