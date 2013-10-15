@@ -24,6 +24,14 @@ function isBelow(el1, el2) {
   return false;
 }
 
+function normalizeOrder(list) {
+  order = 0;
+  list.forEach(function(item) {
+    Ember.set(item,'order',order);
+    order++;
+  });
+}
+
 var CustomElement = Ember.Mixin.create({
   init: function() {
     this._super.apply(this, arguments);
@@ -77,64 +85,68 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     }
 
     var newList = this.get('model');
+    var oldList;
     var draggedElement;
     var cameFromDifferentList;
+    var otherObjectWithSameOrder;
     // console.debug('sortable drop');
     // console.log('event.target',event.target);
-
     // event,oldList,newList,object,newIndex
-    
+
     if(typeof currentDraggable !== 'undefined') {
+
       oldList = currentDraggable.get('parentView.model');
       cameFromDifferentList = oldList !== newList;
+
+      // if dropped in the same location it came from
+      if(!cameFromDifferentList && currentDraggable.get('order') === newIndex) {
+        return false;
+      }
+
       draggedElement = currentDraggable.$().get(0);
       if(cameFromDifferentList) {
-        oldList.removeObject(currentDraggable.get('model'));    
+        oldList.removeObject(currentDraggable.get('model'));
       }
-      draggedElement.remove();
-
       var object = currentDraggableModel; // for terseness
-      if(typeof object !== 'undefined') {
-        if(cameFromDifferentList) {
-          newIndex -= 0.1;
-        } else if(object.order < newIndex) {
-          newIndex += 0.1;
-        } else if(object.order >= newIndex) {
-          newIndex -= 0.1;
+
+      draggedElement.remove();
+      otherObjectWithSameOrder = newList.findBy('order',newIndex);
+      if(cameFromDifferentList) {
+        if(typeof otherObjectWithSameOrder !== 'undefined') {
+          Ember.set(otherObjectWithSameOrder,'order',newIndex + 0.5);
         }
-        Ember.set(object,'order',newIndex);
-        
-        if(cameFromDifferentList) {
-          newList.pushObject(object);
-        }
+      } else if(object.order < newIndex) {
+        Ember.set(otherObjectWithSameOrder,'order',newIndex - 0.5);
+      } else if(object.order >= newIndex) {
+        Ember.set(otherObjectWithSameOrder,'order',newIndex + 0.5);
+      }
+
+      Ember.set(object,'order',newIndex);
+      
+      if(cameFromDifferentList) {
+        newList.pushObject(object);
       }
     } else {
-
+      if(typeof otherObjectWithSameOrder !== 'undefined') {
+        Ember.set(otherObjectWithSameOrder,'order',newIndex + 0.5);
+      }
     }
-    
+
     if(this.get('on-drop')) {
-      if(this.get('on-drop').call(this,event,[],this.get('model'),currentDraggableModel,newIndex) === false) { //parentModel, model
+      if(this.get('on-drop').call(this,event,newIndex,currentDraggableModel,oldList,this.get('model')) === false) { //parentModel, model
         return false;
       }
     }
-    
-    var order = 0;
-    newList.forEach(function(item) {
-      Ember.set(item,'order',order);
-      order++;
-    });
 
+    // is this necessary?
+    normalizeOrder(newList);
     if(cameFromDifferentList) {
-      order = 0;
-      oldList.forEach(function(item) {
-        Ember.set(item,'order',order);
-        order++;
-      });
+      normalizeOrder(oldList);
     }
 
-    event.preventDefault()
     currentDraggableModel = undefined;
-    return false;
+    event.preventDefault()
+    return false; // don't bubble
   }
 });
 
@@ -241,9 +253,6 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     // draggedElement.remove();
 
 
-
-
-
     // Ember.run(function() {
       // this.get('parentView.model').pushObject(currentDraggableModel);
       // console.log(this.get('parentView.model.length'));
@@ -280,20 +289,19 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
   },
 
   dragEnter: function(event) {
+    // use validator handler if supplied
     if(this.get('parentView.on-validate-drop')) {
       if(!this.get('parentView.on-validate-drop').call(this,event)) {
         return false;
       }
-    } else {
+    }
+    // otherwise, make sure it's the same data type
+    else {
       if(!event.dataTransfer.types.contains('text/' + this.get('type'))) {
         return false;
       }
     }
-
-    // if(!event.dataTransfer.types.contains('text/uri-list')) {
-    //   return false;
-    // }
-
+    
     // debugger
     if(typeof currentDraggable === 'undefined' 
         || currentDraggable.$().get(0) === this.$().get(0)) {
