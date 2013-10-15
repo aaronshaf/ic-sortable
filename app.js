@@ -14,8 +14,8 @@ App.ApplicationController = Ember.ArrayController.extend({
     return event.dataTransfer.types.contains('text/module');
   },
 
-  onValidateModuleItemDrop: function(event) {   
-    return event.dataTransfer.types.contains('text/module-item') || event.dataTransfer.getData('text/uri-list');
+  onValidateModuleItemDrop: function(event) {  
+    return event.dataTransfer.types.contains('text/module-item') || event.dataTransfer.types.contains('text/uri-list');
   },
 
   onModuleDrop: function(event,newIndex) {

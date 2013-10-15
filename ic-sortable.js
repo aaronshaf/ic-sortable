@@ -45,10 +45,21 @@ var CustomElement = Ember.Mixin.create({
 var oldList = undefined;
 var currentDraggable = undefined;
 var currentDraggableModel = undefined;
+var foreignObjectElement = undefined;
 var newIndex = undefined;
+
+
+App.IcSortablePlaceholderComponent = Ember.Component.extend(CustomElement,{
+  registerWithParent: function() {
+    this.get('parentView').registerPlaceholder(this);
+  }.on('didInsertElement')
+});
 
 App.IcSortableComponent = Ember.Component.extend(CustomElement,{
   // classNames: ['primary'],
+  registerPlaceholder: function(placeholder) {
+    this.set('placeholder', placeholder);
+  },
   dropEffect: 'move',
   attributeBindings: [
     'dropEffect:aria-dropeffect'
@@ -68,12 +79,7 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     // alert(this.get('connected-with'));
   },
 
-  dragEnter: function() {
-    // console.log('dragEnter 2');
-  },
-
-  drop: function(event) {
-    //verify
+  validate: function(event) {
     if(this.get('on-validate-drop')) {
       if(!this.get('on-validate-drop').call(this,event)) {
         return false;
@@ -83,6 +89,32 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
         return false;
       }
     }
+    return true;
+  },
+
+  dragEnter: function(event) {
+    // if(!this.validate(event)) return false;
+    var placeholder = this.get('placeholder');
+    if(typeof placeholder !== 'undefined') {
+      placeholder.$().get(0).style.display = '';
+    }
+  },
+
+  dragLeave: function(event) {
+    // if(event.target.parentNode !== event.currentTarget) {
+    //   return;
+    // }
+
+    // console.log('dragLeave',event);
+    // var placeholder = this.get('placeholder');
+    // if(typeof placeholder !== 'undefined') {
+    //   // console.log('placeholder',placeholder);
+    //   placeholder.$().get(0).style.display = 'none';
+    // }
+  },
+
+  drop: function(event) {
+    if(!this.validate(event)) return false;
 
     var newList = this.get('model');
     var oldList;
@@ -145,6 +177,7 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     }
 
     currentDraggableModel = undefined;
+    foreignObjectElement = undefined
     event.preventDefault()
     return false; // don't bubble
   }
@@ -196,6 +229,12 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
 
     this.originalParentNode = this.$().get(0).parentNode;
     this.set('grabbed',true);
+  },
+
+  dragLeave: function(event) {
+    // event.stopPropagation();
+    // event.preventDefault();
+    // return true;
   },
 
   dragOver: function(event) {
@@ -292,6 +331,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     // use validator handler if supplied
     if(this.get('parentView.on-validate-drop')) {
       if(!this.get('parentView.on-validate-drop').call(this,event)) {
+        console.log(1)
         return false;
       }
     }
@@ -301,11 +341,28 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
         return false;
       }
     }
-    
+
     // debugger
-    if(typeof currentDraggable === 'undefined' 
-        || currentDraggable.$().get(0) === this.$().get(0)) {
+    if(typeof currentDraggable === 'undefined') {
       // return false;
+      // foreignObjectElement = undefined
+      var placeholder = this.get('parentView.placeholder');
+
+      if(typeof placeholder !== 'undefined') {
+        var draggedElement = placeholder.$().get(0);
+        var thisElement = this.$().get(0);
+        if(isBelow(draggedElement, thisElement)) {
+          thisElement.parentNode.insertBefore(draggedElement, thisElement);
+        } else {
+          thisElement.parentNode.insertBefore(draggedElement, thisElement.nextSibling);
+        }
+      }
+
+      // if(typeof foreignObjectElement === 'undefined') {
+
+      // }
+    } else if(currentDraggable.$().get(0) === this.$().get(0)) {
+
     } else {
       var draggedElement = currentDraggable.$().get(0);
       var thisElement = this.$().get(0);

@@ -81,6 +81,7 @@
                     </div>
                   {{/ic-sortable-item}}
                 {{/each}}
+
                 {{#ic-sortable-empty}}
                   <div class="ig-row ig-row-empty">
                     <div class="ig-empty-msg">
@@ -88,6 +89,14 @@
                     </div>
                   </div>
                 {{/ic-sortable-empty}}
+
+                {{#ic-sortable-placeholder}}
+                  <div class="ig-row ig-row-empty">
+                    <div class="ig-empty-msg">
+                      Placeholder
+                    </div>
+                  </div>
+                {{/ic-sortable-placeholder}}
               {{/ic-sortable}}
             </ul>
           {{/ic-sortable-item}}
@@ -100,7 +109,7 @@
     {{yield}}
   </script>
 
-  <script type="text/x-handlebars" id="components/ic-sortable-list">
+  <script type="text/x-handlebars" id="components/ic-sortable-placeholder">
     {{yield}}
   </script>
 
@@ -122,6 +131,22 @@
       -ms-user-select: none;
       user-select: none;
     }
+
+/*    ic-sortable > * {
+      pointer-events: none;
+    }
+
+    ic-sortable {
+      pointer-events: auto;
+    }
+
+    ic-sortable-item > * {
+      pointer-events: none;
+    }
+
+    ic-sortable-item {
+      pointer-events: auto;
+    }*/
 
     .ig-list .ig-row:hover {
       background-color: white;
