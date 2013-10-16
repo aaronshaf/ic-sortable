@@ -8,6 +8,12 @@
   
 // });
 
+var oldList = undefined;
+var currentDraggable = undefined;
+var currentDraggableModel = undefined;
+var foreignObjectElement = undefined;
+var newIndex = undefined;
+
 function isBelow(el1, el2) {
   var parent = el1.parentNode;
   if (el2.parentNode != parent) {
@@ -42,17 +48,14 @@ var CustomElement = Ember.Mixin.create({
   }
 });
 
-var oldList = undefined;
-var currentDraggable = undefined;
-var currentDraggableModel = undefined;
-var foreignObjectElement = undefined;
-var newIndex = undefined;
-
 
 App.IcSortablePlaceholderComponent = Ember.Component.extend(CustomElement,{
   registerWithParent: function() {
     this.get('parentView').registerPlaceholder(this);
-  }.on('didInsertElement')
+  }.on('didInsertElement'),
+  didInsertElement: function() {
+    this.$().get(0).style.display = 'none';
+  }
 });
 
 App.IcSortableComponent = Ember.Component.extend(CustomElement,{
@@ -60,6 +63,23 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
   registerPlaceholder: function(placeholder) {
     this.set('placeholder', placeholder);
   },
+  showPlaceholder: function() {
+    var placeholder = this.get('placeholder');
+    if(typeof placeholder === 'undefined') return;
+    placeholder.$().get(0).style.display = '';
+  },
+  hidePlaceholder: function() {
+    var placeholder = this.get('placeholder');
+    if(typeof placeholder === 'undefined') return;
+    placeholder.$().get(0).style.display = 'none';
+  },
+  resetPlaceholder: function() {
+    var placeholder = this.get('placeholder');
+    if(typeof placeholder === 'undefined') return;
+    // insert into original location
+    debugger
+  },
+  draggingDepth: 0,
   dropEffect: 'move',
   attributeBindings: [
     'dropEffect:aria-dropeffect'
@@ -93,27 +113,34 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
   },
 
   dragEnter: function(event) {
+    this.incrementProperty('draggingDepth');
+    // console.debug('draggingDepth + 1 =',this.get('draggingDepth'));
+
     // if(!this.validate(event)) return false;
-    var placeholder = this.get('placeholder');
-    if(typeof placeholder !== 'undefined') {
-      placeholder.$().get(0).style.display = '';
+    if(typeof currentDraggable === 'undefined') {
+      this.showPlaceholder();
     }
   },
 
   dragLeave: function(event) {
+    this.decrementProperty('draggingDepth');
+    // console.debug('draggingDepth - 1 =',this.get('draggingDepth'));
+
+    if (this.get('draggingDepth') === 0) {
+      this.hidePlaceholder();
+      // this.resetPlaceholder();
+    }
+
     // if(event.target.parentNode !== event.currentTarget) {
     //   return;
     // }
 
     // console.log('dragLeave',event);
-    // var placeholder = this.get('placeholder');
-    // if(typeof placeholder !== 'undefined') {
-    //   // console.log('placeholder',placeholder);
-    //   placeholder.$().get(0).style.display = 'none';
-    // }
+
   },
 
   drop: function(event) {
+    this.hidePlaceholder();
     if(!this.validate(event)) return false;
 
     var newList = this.get('model');
@@ -121,25 +148,28 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     var draggedElement;
     var cameFromDifferentList;
     var otherObjectWithSameOrder;
+    var draggable = currentDraggable;
+    currentDraggable = undefined;
+    var draggableModel = currentDraggableModel; // for terseness
+    currentDraggableModel = undefined;
+
     // console.debug('sortable drop');
     // console.log('event.target',event.target);
     // event,oldList,newList,object,newIndex
 
-    if(typeof currentDraggable !== 'undefined') {
-
-      oldList = currentDraggable.get('parentView.model');
+    if(typeof draggable !== 'undefined') {
+      oldList = draggable.get('parentView.model');
       cameFromDifferentList = oldList !== newList;
 
       // if dropped in the same location it came from
-      if(!cameFromDifferentList && currentDraggable.get('order') === newIndex) {
+      if(!cameFromDifferentList && draggable.get('order') === newIndex) {
         return false;
       }
 
-      draggedElement = currentDraggable.$().get(0);
+      draggedElement = draggable.$().get(0);
       if(cameFromDifferentList) {
-        oldList.removeObject(currentDraggable.get('model'));
+        oldList.removeObject(draggable.get('model'));
       }
-      var object = currentDraggableModel; // for terseness
 
       draggedElement.remove();
       otherObjectWithSameOrder = newList.findBy('order',newIndex);
@@ -147,18 +177,22 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
         if(typeof otherObjectWithSameOrder !== 'undefined') {
           Ember.set(otherObjectWithSameOrder,'order',newIndex + 0.5);
         }
-      } else if(object.order < newIndex) {
+      } else if(draggableModel.order < newIndex) {
         Ember.set(otherObjectWithSameOrder,'order',newIndex - 0.5);
-      } else if(object.order >= newIndex) {
+      } else if(draggableModel.order >= newIndex) {
         Ember.set(otherObjectWithSameOrder,'order',newIndex + 0.5);
       }
 
-      Ember.set(object,'order',newIndex);
+      Ember.set(draggableModel,'order',newIndex);
       
       if(cameFromDifferentList) {
-        newList.pushObject(object);
+        newList.pushObject(draggableModel);
       }
     } else {
+      if(typeof newIndex === 'undefined') {
+        newIndex = this.$('> ic-sortable-item,> ic-sortable-placeholder').index(this.$('> ic-sortable-placeholder'));
+      }
+      otherObjectWithSameOrder = newList.findBy('order',newIndex);
       if(typeof otherObjectWithSameOrder !== 'undefined') {
         Ember.set(otherObjectWithSameOrder,'order',newIndex + 0.5);
       }
@@ -170,12 +204,14 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
       }
     }
 
+
     // is this necessary?
     normalizeOrder(newList);
     if(cameFromDifferentList) {
       normalizeOrder(oldList);
     }
 
+    newIndex = undefined;
     currentDraggableModel = undefined;
     foreignObjectElement = undefined
     event.preventDefault()
@@ -262,7 +298,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
     */
 
     var draggedElement = this.$().get(0);
-    newIndex = this.$().parent().find('ic-sortable-item').index(this.$());
+    newIndex = this.$().parent().find('> ic-sortable-item').index(this.$());
     // console.debug('index',index);
 
     // console.log('originalParentNode',!!this.originalParentNode);
