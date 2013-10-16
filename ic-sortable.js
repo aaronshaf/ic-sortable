@@ -48,13 +48,18 @@ var CustomElement = Ember.Mixin.create({
   }
 });
 
-
 App.IcSortablePlaceholderComponent = Ember.Component.extend(CustomElement,{
   registerWithParent: function() {
     this.get('parentView').registerPlaceholder(this);
   }.on('didInsertElement'),
   didInsertElement: function() {
     this.$().get(0).style.display = 'none';
+  }
+});
+
+App.IcSortableEmptyComponent = Ember.Component.extend(CustomElement,{
+  didInsertElement: function() {
+    // this.$().get(0).style.display = 'none';
   }
 });
 
@@ -119,6 +124,11 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     // if(!this.validate(event)) return false;
     if(typeof currentDraggable === 'undefined') {
       this.showPlaceholder();
+    } else {
+      if(!this.$('ic-sortable-item').length) {
+        var draggedElement = currentDraggable.$().get(0);
+        this.$().prepend(draggedElement);
+      }
     }
   },
 
@@ -203,7 +213,6 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
         return false;
       }
     }
-
 
     // is this necessary?
     normalizeOrder(newList);
@@ -398,19 +407,10 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
 
       // }
     } else if(currentDraggable.$().get(0) === this.$().get(0)) {
-
+      // Do nothing?
     } else {
       var draggedElement = currentDraggable.$().get(0);
       var thisElement = this.$().get(0);
-
-      // if (thisElement != draggedElement.parentNode) {
-      //   if(!this.get('parentView.connected-with')) {
-      //     return false;
-      //   }
-      //   if(this.get('parentView.connected-with') !== currentDraggable.get('parentView.connected-with')) {
-      //     return false;
-      //   }
-      // }
 
       if(isBelow(draggedElement, thisElement)) {
         thisElement.parentNode.insertBefore(draggedElement, thisElement);

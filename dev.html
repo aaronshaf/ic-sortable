@@ -83,17 +83,18 @@
                 {{/each}}
 
                 {{#ic-sortable-empty}}
-                  <div class="ig-row ig-row-empty">
-                    <div class="ig-empty-msg">
-                      No assignments in this Group
-                    </div>
-                  </div>
+                  <div class="ig-row ig-row-empty"></div>
                 {{/ic-sortable-empty}}
 
                 {{#ic-sortable-placeholder}}
-                  <div class="ig-row ig-row-empty">
-                    <div class="ig-empty-msg">
-                      Placeholder
+                  <div class="ig-row" style="opacity: 0.35">
+                    <div href="#" class="ig-title ellipses">
+                      <i class="icon-assignment"></i>
+                    </div>
+                    <div class="ig-details row-fluid"></div>
+                    <div class="ig-admin">
+                      <span class="publish-icon publish-icon-published" data-tooltip title="Unpublish"></span>
+                      <a class="al-trigger al-trigger-gray" href="#"></a>
                     </div>
                   </div>
                 {{/ic-sortable-placeholder}}
@@ -110,6 +111,10 @@
   </script>
 
   <script type="text/x-handlebars" id="components/ic-sortable-placeholder">
+    {{yield}}
+  </script>
+
+  <script type="text/x-handlebars" id="components/ic-sortable-empty">
     {{yield}}
   </script>
 

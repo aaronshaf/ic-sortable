@@ -1,3 +1,6 @@
+var lastId = 6;
+
+
 App = Ember.Application.create({
   // LOG_TRANSITIONS: true,
   // LOG_TRANSITIONS_INTERNAL: true,
@@ -19,7 +22,7 @@ App.ApplicationController = Ember.ArrayController.extend({
   },
 
   onModuleDrop: function(event,newIndex) {
-    alert('Set module ' + event.dataTransfer.getData('text/module') + ' to index ' + newIndex);
+    // alert('Set module ' + event.dataTransfer.getData('text/module') + ' to index ' + newIndex);
     // Example:
     // var id = event.dataTransfer.getData('text/module');
     // this.get('store').update('module', id)
@@ -35,6 +38,7 @@ App.ApplicationController = Ember.ArrayController.extend({
     }
 
     if(event.dataTransfer.types.contains('text/module-item')) {
+      // newList
       // alert('module-item');
       // var id = event.dataTransfer.getData('text/module-item');
       // this.get('store').update('module-item', id)
@@ -46,6 +50,7 @@ App.ApplicationController = Ember.ArrayController.extend({
       }
       url = event.dataTransfer.getData('text/uri-list');
       module_item = Ember.Object.create({
+        id: ++lastId,
         url: url,
         name: name,
         order: newIndex
