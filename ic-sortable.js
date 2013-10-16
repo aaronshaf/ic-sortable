@@ -158,21 +158,18 @@ App.IcSortableComponent = Ember.Component.extend(CustomElement,{
     var draggedElement;
     var cameFromDifferentList;
     var otherObjectWithSameOrder;
-    var draggable = currentDraggable;
+    var draggable = currentDraggable; // for terseness
     currentDraggable = undefined;
     var draggableModel = currentDraggableModel; // for terseness
     currentDraggableModel = undefined;
 
-    // console.debug('sortable drop');
-    // console.log('event.target',event.target);
-    // event,oldList,newList,object,newIndex
-
+    // draggable is "local" and is already represented and rendered
     if(typeof draggable !== 'undefined') {
       oldList = draggable.get('parentView.model');
       cameFromDifferentList = oldList !== newList;
 
       // if dropped in the same location it came from
-      if(!cameFromDifferentList && draggable.get('order') === newIndex) {
+      if(typeof newIndex === 'undefined' || typeof draggable.get('model.order') === 'undefined' || !cameFromDifferentList && draggable.get('model.order') === newIndex) {
         return false;
       }
 
@@ -406,7 +403,7 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
       // if(typeof foreignObjectElement === 'undefined') {
 
       // }
-    } else if(currentDraggable.$().get(0) === this.$().get(0)) {
+    } else if(currentDraggable === this || currentDraggable.$().get(0) === this.$().get(0)) {
       // Do nothing?
     } else {
       var draggedElement = currentDraggable.$().get(0);
