@@ -16,7 +16,12 @@
   
   <script src="data.js"></script>
   <script src="app.js"></script>
-  <script src="ic-sortable.js"></script>
+  <script src="controllers/application.js"></script>
+  <script src="controllers/index.js"></script>
+  <script src="components/ic-sortable.js"></script>
+  <script src="components/ic-sortable-empty.js"></script>
+  <script src="components/ic-sortable-item.js"></script>
+  <script src="components/ic-sortable-placeholder.js"></script>
 
   <script type="text/x-handlebars">
     <h2 aria-hidden="true">Drag and Drop Using <a href="http://emberjs.com/guides/components/">Ember Components</a> and <a href="http://dev.w3.org/html5/spec-LC/dnd.html">Native HTML5 Drag and Drop API</a></h2>
@@ -83,7 +88,7 @@
                 {{/each}}
 
                 {{#ic-sortable-empty}}
-                  <div class="ig-row ig-row-empty"></div>
+                  <div class="ig-row ig-row-empty">[Empty]</div>
                 {{/ic-sortable-empty}}
 
                 {{#ic-sortable-placeholder}}
@@ -94,7 +99,7 @@
                     <div class="ig-details row-fluid"></div>
                     <div class="ig-admin">
                       <span class="publish-icon publish-icon-published" data-tooltip title="Unpublish"></span>
-                      <a class="al-trigger al-trigger-gray" href="#"></a>
+                      <a class="al-trigger al-trigger-gray" href="#">[Placeholder]</a>
                     </div>
                   </div>
                 {{/ic-sortable-placeholder}}
