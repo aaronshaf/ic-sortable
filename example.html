@@ -12,9 +12,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://builds.emberjs.com/handlebars-1.0.0.js"></script>
   <script src="http://builds.emberjs.com/tags/v1.0.0/ember.js"></script>
-  <script src="http://builds.emberjs.com/canary/ember-data.js"></script>
   
-  <script src="data.js"></script>
   <script src="app.js"></script>
   <script src="controllers/application.js"></script>
   <script src="controllers/index.js"></script>
@@ -32,39 +30,39 @@
             on-drop=onModuleDrop
             type="module"
           }}
-        {{#each kid in this}}
+        {{#each module in this}}
           {{#ic-sortable-item
               class="item-group-condensed"
-              model=kid
-              url=kid.url
-              aria-label=kid.name
+              model=module
+              url=module.url
+              aria-label=module.name
               type="module"
             }}
             <div class="ig-header">
               <h2 class="ig-header-title element_toggler">
-                <i class="icon-mini-arrow-down"></i> {{kid.name}} (order: {{kid.order}})
+                <i class="icon-mini-arrow-down"></i> {{module.name}} (order: {{module.order}})
               </h2>
             </div>
 
-            {{kid.chores.length}}
+            {{module.items.length}}
 
             <ul class="ig-list">
               {{#ic-sortable
-                  parent=kid
-                  model=kid.chores
+                  parent=module
+                  model=module.items
                   on-validate-drop=onValidateModuleItemDrop
                   on-drop=onModuleItemDrop
                   type="module-item"
                 }}
-                {{#each chore in kid.chores}}
+                {{#each item in module.items}}
                   {{#ic-sortable-item
                       class="ig-row"
-                      model=chore
-                      url=chore.url
-                      aria-label=chore.name
+                      model=item
+                      url=item.url
+                      aria-label=item.name
                       type="module-item"}}
                     <div href="#" class="ig-title ellipses">
-                      <i class="icon-assignment"></i> {{chore.name}} (order: {{chore.order}})
+                      <i class="icon-assignment"></i> {{item.name}} (order: {{item.order}})
                     </div>
                     <div class="ig-details row-fluid">
                       <div class="span4 ellipses"><b>Due</b> Nov 4, 2012</div>

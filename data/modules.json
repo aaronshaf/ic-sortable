@@ -1,0 +1,759 @@
+[
+   {
+      "id":1,
+      "name":"Test",
+      "position":1,
+      "unlock_at":null,
+      "require_sequential_progress":false,
+      "prerequisite_module_ids":[
+
+      ],
+      "published":true,
+      "items_count":49,
+      "items_url":"http://localhost:3000/api/v1/courses/1/modules/1/items",
+      "items":[
+         {
+            "id":2,
+            "indent":0,
+            "position":0,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/2",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":3,
+            "indent":2,
+            "position":1,
+            "title":"Tfawewefawef",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/3",
+            "content_id":2,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/2",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":48,
+            "indent":2,
+            "position":2,
+            "title":"Whoaaaa",
+            "type":"SubHeader",
+            "module_id":1,
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":11,
+            "indent":1,
+            "position":3,
+            "title":"Tfawewefawef",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/11",
+            "content_id":2,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/2",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":1,
+            "indent":2,
+            "position":4,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/1",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":15,
+            "indent":2,
+            "position":5,
+            "title":"Tfawewefawef",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/15",
+            "content_id":2,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/2",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":13,
+            "indent":1,
+            "position":6,
+            "title":"Front Page",
+            "type":"Page",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/13",
+            "page_url":"front-page",
+            "url":"http://localhost:3000/api/v1/courses/1/pages/front-page",
+            "published":false,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":4,
+            "indent":0,
+            "position":6,
+            "title":"Tfawewefawef",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/4",
+            "content_id":2,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/2",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":19,
+            "indent":1,
+            "position":7,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/19",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":5,
+            "indent":2,
+            "position":8,
+            "title":"CNN",
+            "type":"ExternalUrl",
+            "module_id":1,
+            "html_url":"http://localhost:3000/api/v1/courses/1/module_item_redirect/5",
+            "external_url":"http://www.cnn.com/",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":6,
+            "indent":1,
+            "position":9,
+            "title":"ABC",
+            "type":"SubHeader",
+            "module_id":1,
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":7,
+            "indent":0,
+            "position":10,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/7",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":10,
+            "indent":0,
+            "position":11,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/10",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":8,
+            "indent":0,
+            "position":12,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/8",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":12,
+            "indent":0,
+            "position":13,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/12",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":9,
+            "indent":0,
+            "position":14,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/9",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":14,
+            "indent":0,
+            "position":15,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/14",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":16,
+            "indent":0,
+            "position":16,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/16",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":17,
+            "indent":0,
+            "position":17,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/17",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":18,
+            "indent":0,
+            "position":18,
+            "title":"Tfawewefawef",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/18",
+            "content_id":2,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/2",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":20,
+            "indent":0,
+            "position":19,
+            "title":"Tfawewefawef",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/20",
+            "content_id":2,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/2",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":21,
+            "indent":0,
+            "position":20,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/21",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":22,
+            "indent":0,
+            "position":21,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/22",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":23,
+            "indent":0,
+            "position":22,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/23",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":24,
+            "indent":0,
+            "position":23,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/24",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":25,
+            "indent":0,
+            "position":24,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/25",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":26,
+            "indent":0,
+            "position":25,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/26",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":27,
+            "indent":0,
+            "position":26,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/27",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":28,
+            "indent":0,
+            "position":27,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/28",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":29,
+            "indent":0,
+            "position":28,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/29",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":30,
+            "indent":0,
+            "position":29,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/30",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":31,
+            "indent":0,
+            "position":30,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/31",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":32,
+            "indent":0,
+            "position":31,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/32",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":33,
+            "indent":0,
+            "position":32,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/33",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":34,
+            "indent":0,
+            "position":33,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/34",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":35,
+            "indent":0,
+            "position":34,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/35",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":36,
+            "indent":0,
+            "position":35,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/36",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":37,
+            "indent":0,
+            "position":36,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/37",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":38,
+            "indent":0,
+            "position":37,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/38",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":39,
+            "indent":0,
+            "position":38,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/39",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":40,
+            "indent":0,
+            "position":39,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/40",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":41,
+            "indent":0,
+            "position":40,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/41",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":42,
+            "indent":0,
+            "position":41,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/42",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":43,
+            "indent":0,
+            "position":42,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/43",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":44,
+            "indent":0,
+            "position":43,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/44",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":45,
+            "indent":0,
+            "position":44,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/45",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":46,
+            "indent":0,
+            "position":45,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/46",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":47,
+            "indent":0,
+            "position":46,
+            "title":"Test 1",
+            "type":"Assignment",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/47",
+            "content_id":1,
+            "url":"http://localhost:3000/api/v1/courses/1/assignments/1",
+            "published":true,
+            "content_details":{
+
+            }
+         },
+         {
+            "id":49,
+            "indent":0,
+            "position":48,
+            "title":"Testttttt",
+            "type":"Page",
+            "module_id":1,
+            "html_url":"http://localhost:3000/courses/1/modules/items/49",
+            "page_url":"testttttt",
+            "url":"http://localhost:3000/api/v1/courses/1/pages/testttttt",
+            "published":false,
+            "content_details":{
+
+            }
+         }
+      ]
+   },
+
+   {
+      "id":2,
+      "name":"Test 2",
+      "position":2,
+      "unlock_at":null,
+      "require_sequential_progress":false,
+      "prerequisite_module_ids":[
+
+      ],
+      "published":true,
+      "items_count":0,
+      "items_url":"http://localhost:3000/api/v1/courses/1/modules/2/items"
+    }
+]

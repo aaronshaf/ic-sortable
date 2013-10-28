@@ -32,8 +32,8 @@ App.IcSortableItemComponent = Ember.Component.extend(CustomElement,{
       type = this.get('parentView.type');
     }
 
-    event.dataTransfer.setData('text/' + type, this.get('url')); // necessary to have something
-    event.dataTransfer.setData('Text', this.get('url')); // necessary to have something
+    event.dataTransfer.setData('text/' + type, this.get('href')); // necessary to have something
+    event.dataTransfer.setData('Text', this.get('href')); // necessary to have something
     // event.target.opacity = "1.0";
     // event.dataTransfer.setDragImage(event.target,-10,-10);
 

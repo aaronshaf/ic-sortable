@@ -1,5 +1,5 @@
 App.ApplicationController = Ember.ArrayController.extend({
-  content: kids,
+  content: modules,
   sortProperties: ['order'],
   sortAscending: true,
 
